@@ -3,7 +3,8 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { DeleteResult, UpdateResult } from 'typeorm';
+import { DeleteResult } from 'typeorm';
+import { CreateProfileDto } from './dto/create-profile.dto';
 
 @Controller('users')
 export class UsersController {
@@ -26,11 +27,16 @@ export class UsersController {
   }
 
   @Patch(':id')
-  async updateUser(@Param('id', ParseIntPipe) id: number, @Body() updatedUser: UpdateUserDto): Promise<UpdateResult | HttpException> {
+  async updateUser(@Param('id', ParseIntPipe) id: number, @Body() updatedUser: UpdateUserDto): Promise<User | HttpException> {
     return await this.usersService.updateUser(id, updatedUser)
   }
 
   @Delete(':id')
   async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<DeleteResult | HttpException>{
   return await this.usersService.deleteUser(id)}
+  
+  @Post(':id/profile')
+  async createProfile(@Param('id', ParseIntPipe) id:number, @Body() profile: CreateProfileDto): Promise<User | HttpException> {
+    return await this.usersService.createProfile(id, profile)
+  }
 }
